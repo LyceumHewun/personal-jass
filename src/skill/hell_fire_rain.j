@@ -9,9 +9,10 @@ function Trig_skill2_Actions takes nothing returns nothing
     // 陨石数量
     local integer subQuantity = 10
     // 陨石影响范围
-    local real subScope = 80.
+    local real subScope = 160.
     // 每个陨石伤害
-    local integer damage = 100
+    local integer minDamage = 80
+    local integer maxDamage = 300
     // 每个陨石间隔
     local real interval = 0.6
     // TODO: 施法者
@@ -35,7 +36,7 @@ function Trig_skill2_Actions takes nothing returns nothing
     set bj_forLoopAIndexEnd = subQuantity
     set loc = GetUnitLoc(target)
     set effect0 = AddSpecialEffectLocBJ( loc, "Units\\Demon\\Infernal\\InfernalBirth.mdl" )
-    call UnitDamagePointLoc( caster, 0.8, subScope, loc, damage, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
+    call UnitDamagePointLoc( caster, 0.8, subScope, loc, GenerateRandomDamage(minDamage, maxDamage), ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
     call TriggerSleepAction(interval)
     // 创建受影响区域
     // 创建target为中心的矩形
@@ -47,7 +48,7 @@ function Trig_skill2_Actions takes nothing returns nothing
         set randomLoc = GetRandomLocInRect(r)
         set effect1 = AddSpecialEffectLocBJ( randomLoc , "Units\\Demon\\Infernal\\InfernalBirth.mdl" )
         // 伤害
-        call UnitDamagePointLoc( caster, 0.8, subScope, randomLoc, damage, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
+        call UnitDamagePointLoc( caster, 0.8, subScope, randomLoc, GenerateRandomDamage(minDamage, maxDamage), ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
         call TriggerSleepAction(interval)
         call DestroyEffect(effect1)
         set effect1 = null

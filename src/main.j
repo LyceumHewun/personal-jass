@@ -45,3 +45,8 @@ function SelectSkillTarget takes unit caster, real rd returns unit
     call DestroyGroup(g)
     return target
 endfunction
+
+// 生成随机伤害函数
+function GenerateRandomDamage takes integer minDamage, integer maxDamage returns integer
+    return GetRandomInt(minDamage, maxDamage)
+endfunction
