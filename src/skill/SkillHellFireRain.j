@@ -51,8 +51,8 @@ function SkillHellFireRain takes unit caster returns nothing
     endloop
     // 清理
     set target = null
-    set effect0 = null
     call DestroyEffect(effect0)
+    set effect0 = null
     call RemoveLocation(loc)
     set loc = null
     call RemoveLocation(randomLoc)
