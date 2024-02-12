@@ -81,11 +81,13 @@ function SkillShockingRoar takes unit caster returns nothing
             // 击退
             call UnitKnockback(u, knockbackDistance, temp_angle)
             set temp_loc = GetUnitLoc(u)
-            // 特效
-            set temp_e = AddSpecialEffectLoc("Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl", temp_loc)
             // 伤害
             call UnitDamageTarget(caster, u, knockbackDamage, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
-            // 移除特效
+            // 特效
+            set temp_e = AddSpecialEffectLoc("Objects\\Spawnmodels\\Undead\\ImpaleTargetDust\\ImpaleTargetDust.mdl", temp_loc)
+            call DestroyEffect(temp_e)
+            set temp_e = null
+            set temp_e = AddSpecialEffectLoc("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", temp_loc)
             call DestroyEffect(temp_e)
             set temp_e = null
             call RemoveLocation(temp_loc)
