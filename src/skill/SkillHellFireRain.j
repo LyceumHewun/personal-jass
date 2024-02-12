@@ -1,4 +1,3 @@
-// 玩家按下f键，施放技能
 // 陨石雨
 function SkillHellFireRain takes unit caster returns nothing
     // 施放距离
