@@ -1,7 +1,6 @@
 // 玩家按下f键，施放技能
-// 自动选择目标，施放范围技能
 // 陨石雨
-function Trig_skill2_Actions takes nothing returns nothing
+function SkillHellFireRain takes unit caster returns nothing
     // 施放距离
     local real rd = 2000.
     // 影响范围
@@ -15,8 +14,6 @@ function Trig_skill2_Actions takes nothing returns nothing
     local integer maxDamage = 300
     // 每个陨石间隔
     local real interval = 0.6
-    // TODO: 施法者
-    local unit caster = gg_unit_h000_0081
     local unit target = SelectSkillTarget(caster, rd)
     local unit u
     local effect effect0
@@ -26,8 +23,7 @@ function Trig_skill2_Actions takes nothing returns nothing
     local location randomLoc
     if target == null then
         set target = null
-        set caster = null
-        call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, 10, "no target")
+        // call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, 10, "no target")
         return
     endif
     // 特效
@@ -54,7 +50,6 @@ function Trig_skill2_Actions takes nothing returns nothing
         set effect1 = null
     endloop
     // 清理
-    set caster = null
     set target = null
     set effect0 = null
     call DestroyEffect(effect0)
@@ -63,11 +58,4 @@ function Trig_skill2_Actions takes nothing returns nothing
     call RemoveLocation(randomLoc)
     set randomLoc = null
     set r = null
-endfunction
-
-//===========================================================================
-function InitTrig_skill2 takes nothing returns nothing
-    set gg_trg_skill2 = CreateTrigger(  )
-    call TriggerRegisterPlayerChatEvent( gg_trg_skill2, Player(0), "f", true )
-    call TriggerAddAction( gg_trg_skill2, function Trig_skill2_Actions )
 endfunction
