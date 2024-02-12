@@ -28,6 +28,17 @@ function SkillShockingRoar takes unit caster returns nothing
     // 移除自己
     call GroupRemoveUnit(g, caster)
 
+    // 移除不可攻击单位
+    call GroupAddGroup(g, temp_g)
+    loop
+        set u = FirstOfGroup(temp_g)
+        exitwhen u == null
+        call GroupRemoveUnit(temp_g, u)
+        if ( not IsUnitEnemy( u, GetOwningPlayer( caster ) ) ) or ( not IsUnitAliveBJ(u) ) then
+            call GroupRemoveUnit(g, u)
+        endif
+    endloop
+
     // 眩晕单位
     call GroupAddGroup(g, temp_g)
     loop
