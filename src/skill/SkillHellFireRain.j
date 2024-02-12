@@ -31,6 +31,7 @@ function SkillHellFireRain takes unit caster returns nothing
     set bj_forLoopAIndexEnd = subQuantity
     set loc = GetUnitLoc(target)
     set effect0 = AddSpecialEffectLocBJ( loc, "Units\\Demon\\Infernal\\InfernalBirth.mdl" )
+    call BlzSetSpecialEffectScale( effect0, 0.8 )
     call UnitDamagePointLoc( caster, 0.8, subScope, loc, GenerateRandomDamage(minDamage, maxDamage), ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
     call TriggerSleepAction(interval)
     // 创建受影响区域
@@ -42,6 +43,7 @@ function SkillHellFireRain takes unit caster returns nothing
         // do
         set randomLoc = GetRandomLocInRect(r)
         set effect1 = AddSpecialEffectLocBJ( randomLoc , "Units\\Demon\\Infernal\\InfernalBirth.mdl" )
+        call BlzSetSpecialEffectScale( effect1, 0.8 )
         // 伤害
         call UnitDamagePointLoc( caster, 0.8, subScope, randomLoc, GenerateRandomDamage(minDamage, maxDamage), ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
         call TriggerSleepAction(interval)

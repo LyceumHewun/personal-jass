@@ -64,6 +64,7 @@ function SkillShockingRoar takes unit caster returns nothing
     // 效果
     // 创建咆哮特效
     set e0 = AddSpecialEffectLoc("Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl", loc_caster)
+    call BlzSetSpecialEffectScale( e0, 1.5 )
     set e1 = AddSpecialEffectLoc("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", loc_caster)
     // 群体效果
     set temp_count = 0
@@ -85,9 +86,11 @@ function SkillShockingRoar takes unit caster returns nothing
             call UnitDamageTarget(caster, u, knockbackDamage, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
             // 特效
             set temp_e = AddSpecialEffectLoc("Objects\\Spawnmodels\\Undead\\ImpaleTargetDust\\ImpaleTargetDust.mdl", temp_loc)
+            call BlzSetSpecialEffectScale( temp_e, 0.2 )
             call DestroyEffect(temp_e)
             set temp_e = null
             set temp_e = AddSpecialEffectLoc("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", temp_loc)
+            call BlzSetSpecialEffectScale( temp_e, 0.5 )
             call DestroyEffect(temp_e)
             set temp_e = null
             call RemoveLocation(temp_loc)
