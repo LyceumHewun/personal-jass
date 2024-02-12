@@ -12,8 +12,10 @@ function SkillShockingRoar takes unit caster returns nothing
     local integer knockbackCount = 3
     // 每次击退伤害
     local integer knockbackDamage = 150
+    local location loc_caster = GetUnitLoc(caster)
+    local location temp_loc
     // 伤害的单位
-    local group g = GetUnitsInRangeOfLocAll( scope / 2, GetUnitLoc(caster))
+    local group g = GetUnitsInRangeOfLocAll( scope / 2, loc_caster)
     local unit u
     local integer temp_count
     local real temp_angle
@@ -50,8 +52,8 @@ function SkillShockingRoar takes unit caster returns nothing
 
     // 效果
     // 创建咆哮特效
-    set e0 = AddSpecialEffectLoc("Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl", GetUnitLoc(caster))
-    set e1 = AddSpecialEffectLoc("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", GetUnitLoc(caster))
+    set e0 = AddSpecialEffectLoc("Abilities\\Spells\\NightElf\\BattleRoar\\RoarCaster.mdl", loc_caster)
+    set e1 = AddSpecialEffectLoc("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", loc_caster)
     // 群体效果
     set temp_count = 0
     loop
@@ -67,13 +69,16 @@ function SkillShockingRoar takes unit caster returns nothing
 
             // 击退
             call UnitKnockback(u, knockbackDistance, temp_angle)
+            set temp_loc = GetUnitLoc(u)
             // 特效
-            set temp_e = AddSpecialEffectLoc("Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl", GetUnitLoc(u))
+            set temp_e = AddSpecialEffectLoc("Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl", temp_loc)
             // 伤害
             call UnitDamageTarget(caster, u, knockbackDamage, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
             // 移除特效
             call DestroyEffect(temp_e)
             set temp_e = null
+            call RemoveLocation(temp_loc)
+            set temp_loc = null
         endloop
         // 间隔
         call TriggerSleepAction(knockbackDuration)
@@ -98,4 +103,6 @@ function SkillShockingRoar takes unit caster returns nothing
     set e1 = null
     call DestroyGroup(temp_g)
     set temp_g = null
+    call RemoveLocation(loc_caster)
+    set loc_caster = null
 endfunction
