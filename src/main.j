@@ -50,3 +50,21 @@ endfunction
 function GenerateRandomDamage takes integer minDamage, integer maxDamage returns integer
     return GetRandomInt(minDamage, maxDamage)
 endfunction
+
+// 计算两点之间的角度
+function GetAngleBetweenPoints takes real x1, real y1, real x2, real y2 returns real
+    local real dx = x2 - x1
+    local real dy = y2 - y1
+    local real angle = bj_RADTODEG * Atan2(dy, dx)
+    // debug
+    // call BJDebugMsg("angle: " + I2S(R2I(angle)))
+    return angle
+endfunction
+
+// 单位击退（根据角度和距离设置新位置）
+function UnitKnockback takes unit u, real distance, real angle returns nothing
+    local real angleRad = angle * bj_DEGTORAD
+    local real x = GetUnitX(u) - distance * Cos(angleRad)
+    local real y = GetUnitY(u) - distance * Sin(angleRad)
+    call SetUnitPosition(u, x, y)
+endfunction
