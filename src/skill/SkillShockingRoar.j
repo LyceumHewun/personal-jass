@@ -3,26 +3,26 @@
 // 咆哮
 function SkillShockingRoar takes unit caster returns nothing
     // 影响范围
-    local real scope = 600.
+    local real scope = 300.
     // 击退间隔
-    local real knockbackDuration = 0.01
+    local real knockbackDuration = 0.001
     // 每次击退距离
-    local real knockbackDistance = 100.
+    local real knockbackDistance = 15.
     // 击退次数
-    local integer knockbackCount = 3
+    local integer knockbackCount = 20
     // 每次击退伤害
-    local integer knockbackDamage = 150
+    local integer knockbackDamage = 6
     local location loc_caster = GetUnitLoc(caster)
     local location temp_loc
     // 伤害的单位
-    local group g = GetUnitsInRangeOfLocAll( scope / 2, loc_caster)
+    local group g = GetUnitsInRangeOfLocAll( scope, loc_caster)
     local unit u
     local integer temp_count
     local real temp_angle
     local real array angle_array
     local effect e0
     local effect e1
-    local effect temp_e
+    local effect array temp_e_array
     local group temp_g = CreateGroup()
     local integer i
     // 移除自己
@@ -34,18 +34,34 @@ function SkillShockingRoar takes unit caster returns nothing
         set u = FirstOfGroup(temp_g)
         exitwhen u == null
         call GroupRemoveUnit(temp_g, u)
+        // 友军单位
         if ( not IsUnitEnemy( u, GetOwningPlayer( caster ) ) ) or ( not IsUnitAliveBJ(u) ) then
+            call GroupRemoveUnit(g, u)
+        endif
+        // 无敌单位
+        if ( IsUnitType(u, UNIT_TYPE_STRUCTURE) ) then
+            call GroupRemoveUnit(g, u)
+        endif
+        // 魔免单位
+        if ( IsUnitType(u, UNIT_TYPE_MAGIC_IMMUNE) ) then
+            call GroupRemoveUnit(g, u)
+        endif
+        // 空中单位
+        if ( IsUnitType(u, UNIT_TYPE_FLYING) ) then
             call GroupRemoveUnit(g, u)
         endif
     endloop
 
-    // 眩晕单位
+    // 禁止单位移动
+    set i = 0
     call GroupAddGroup(g, temp_g)
     loop
         set u = FirstOfGroup(temp_g)
         exitwhen u == null
         call GroupRemoveUnit(temp_g, u)
-        call UnitPauseTimedLife(u, true)
+        call SetUnitPropWindow(u, 0)
+        set temp_e_array[i] = AddSpecialEffectTargetUnitBJ( "overhead", u, "Abilities\\Spells\\Orc\\StasisTrap\\StasisTotemTarget.mdl" )
+        set i = i + 1
     endloop
 
     // 计算角度
@@ -79,35 +95,36 @@ function SkillShockingRoar takes unit caster returns nothing
             set temp_angle = angle_array[i]
             set i = i + 1
 
-            // 击退
-            call UnitKnockback(u, knockbackDistance, temp_angle)
-            set temp_loc = GetUnitLoc(u)
-            // 伤害
-            call UnitDamageTarget(caster, u, knockbackDamage, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
-            // 特效
-            set temp_e = AddSpecialEffectLoc("Objects\\Spawnmodels\\Undead\\ImpaleTargetDust\\ImpaleTargetDust.mdl", temp_loc)
-            call BlzSetSpecialEffectScale( temp_e, 0.2 )
-            call DestroyEffect(temp_e)
-            set temp_e = null
-            set temp_e = AddSpecialEffectLoc("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", temp_loc)
-            call BlzSetSpecialEffectScale( temp_e, 0.5 )
-            call DestroyEffect(temp_e)
-            set temp_e = null
-            call RemoveLocation(temp_loc)
-            set temp_loc = null
+            if IsUnitAliveBJ(u) then
+                // 击退
+                call UnitKnockback(u, knockbackDistance, temp_angle)
+                set temp_loc = GetUnitLoc(u)
+                // 伤害
+                call UnitDamageTarget(caster, u, knockbackDamage, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
+                call RemoveLocation(temp_loc)
+                set temp_loc = null
+            endif
         endloop
         // 间隔
         call TriggerSleepAction(knockbackDuration)
         set temp_count = temp_count + 1
     endloop
 
-    // 解除眩晕
+    // 等待2秒
+    call TriggerSleepAction(2.0)
+
+    // 恢复单位移动
+    set i = 0
     call GroupAddGroup(g, temp_g)
     loop
         set u = FirstOfGroup(temp_g)
         exitwhen u == null
         call GroupRemoveUnit(temp_g, u)
-        call UnitPauseTimedLife(u, false)
+        // 记录单位属性
+        call SetUnitPropWindow(u, GetUnitDefaultPropWindow(u))
+        call DestroyEffect(temp_e_array[i])
+        set temp_e_array[i] = null
+        set i = i + 1
     endloop
 
     // 清理
