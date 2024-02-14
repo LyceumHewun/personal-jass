@@ -68,3 +68,12 @@ function UnitKnockback takes unit u, real distance, real angle returns nothing
     local real y = GetUnitY(u) - distance * Sin(angleRad)
     call SetUnitPosition(u, x, y)
 endfunction
+
+// 获取单位面向角度<distance>距离的点
+function GetUnitFacingNewLoc takes unit u, real distance returns location
+    local real angle = GetUnitFacing(u)
+    local real angleRad = angle * bj_DEGTORAD
+    local real x = GetUnitX(u) + distance * Cos(angleRad)
+    local real y = GetUnitY(u) + distance * Sin(angleRad)
+    return Location(x, y)
+endfunction
