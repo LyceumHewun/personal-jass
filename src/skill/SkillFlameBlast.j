@@ -15,7 +15,7 @@ function SkillFlameBlast takes unit caster returns nothing
     loop
         exitwhen i > 3
         // 新点
-        set loc_array[i] = GetUnitFacingNewLoc(caster, (i + 1) * 200)
+        set loc_array[i] = GenerateLocByUnit(caster, (i + 1) * 200, GetUnitFacing(caster))
         set i = i + 1
     endloop
 

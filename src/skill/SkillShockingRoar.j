@@ -137,7 +137,7 @@ function SkillShockingRoar takes unit caster returns nothing
         exitwhen u == null
         call GroupRemoveUnit(temp_g, u)
         // 计算角度
-        set temp_angle = GetAngleBetweenPoints(GetUnitX(u), GetUnitY(u), GetUnitX(caster), GetUnitY(caster))
+        set temp_angle = CalcAngleByUnit(u, caster)
         call SaveReal(angle_Hash, GetHandleId(u), 0, temp_angle)
     endloop
 
