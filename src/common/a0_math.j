@@ -8,6 +8,10 @@ function CalcDistanceByUnit takes unit u1, unit u2 returns real
     return CalcDistance(GetUnitX(u1), GetUnitY(u1), GetUnitX(u2), GetUnitY(u2))
 endfunction
 
+function CalcDistanceByLoc takes location l1, location l2 returns real
+    return CalcDistance(GetLocationX(l1), GetLocationY(l1), GetLocationX(l2), GetLocationY(l2))
+endfunction
+
 // 计算两点之间的角度
 function CalcAngle takes real x1, real y1, real x2, real y2 returns real
     local real dx
@@ -24,6 +28,10 @@ endfunction
 // 计算两单位之间的角度
 function CalcAngleByUnit takes unit u1, unit u2 returns real
     return CalcAngle(GetUnitX(u1), GetUnitY(u1), GetUnitX(u2), GetUnitY(u2))
+endfunction
+
+function CalcAngleByLoc takes location l1, location l2 returns real
+    return CalcAngle(GetLocationX(l1), GetLocationY(l1), GetLocationX(l2), GetLocationY(l2))
 endfunction
 
 // 生成一个位置
@@ -45,3 +53,6 @@ function GenerateLocByUnit takes unit u, real distance, real angle returns locat
     return GenerateLoc(GetUnitX(u), GetUnitY(u), distance, angle)
 endfunction
 
+function GenerateLocByLoc takes location l, real distance, real angle returns location
+    return GenerateLoc(GetLocationX(l), GetLocationY(l), distance, angle)
+endfunction
