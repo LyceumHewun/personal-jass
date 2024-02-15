@@ -2,7 +2,8 @@ globals
     // Start Configuration
 
     constant real Common_SkillKnockback_TimerInterval = 0.03
-    constant integer Common_SkillKnockback_KnockbackCount = 20
+    constant integer Common_SkillKnockback_KnockbackCount = 10
+    constant real Common_SkillKnockback_KnockbackCompensate = 0.0563
 
     // End Configuration
 
@@ -61,7 +62,8 @@ function SkillKnockbackFunc takes unit u, real distance, real angle returns noth
     local integer id
     local hashtable distance_Hash
     local real temp_distance
-    local real temp_distance_sum
+    local real remaining_distance
+    local real compensate
     local integer i
 
     set t = CreateTimer()
@@ -76,11 +78,13 @@ function SkillKnockbackFunc takes unit u, real distance, real angle returns noth
     // linear decrease
     set i = 0
     set temp_distance = 0
-    set temp_distance_sum = 0
+    set remaining_distance = distance
+    set compensate = distance * Common_SkillKnockback_KnockbackCompensate / Common_SkillKnockback_KnockbackCount
     loop
         exitwhen i > Common_SkillKnockback_KnockbackCount
-        set temp_distance = (distance - temp_distance_sum) / 3
-        set temp_distance_sum = temp_distance_sum + temp_distance
+        set temp_distance = remaining_distance / 4
+        set remaining_distance = remaining_distance - temp_distance
+        set temp_distance = temp_distance + compensate
         if temp_distance < 0.01 then
             set temp_distance = 0.01
         endif
