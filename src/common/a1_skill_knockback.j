@@ -45,8 +45,6 @@ function SkillKnockbackFunc_TimerFunc takes nothing returns nothing
 
         // Unfreezing
         call PauseUnit(u, false)
-        // Volume touch
-        call SetUnitPathing(u, true)
     endif
 
     // Clear leaks
@@ -96,8 +94,6 @@ function SkillKnockbackFunc takes unit u, real distance, real angle returns noth
 
     // Freezing
     call PauseUnit(u, true)
-    // Volume touch
-    call SetUnitPathing(u, false)
 
     call TimerStart(t, Common_SkillKnockback_TimerInterval, true, function SkillKnockbackFunc_TimerFunc)
 

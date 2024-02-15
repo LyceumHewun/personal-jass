@@ -124,7 +124,6 @@ function SkillShockingRoar takes unit caster returns nothing
         exitwhen u == null
         call GroupRemoveUnit(temp_g, u)
         call SetUnitPropWindow(u, 0)
-        call SetUnitPathing(u, false)
         call BlzUnitInterruptAttack(u)
         set temp_e = AddSpecialEffectTargetUnitBJ( "overhead", u, "Abilities\\Spells\\Orc\\StasisTrap\\StasisTotemTarget.mdl" )
         call SaveEffectHandle(effect_Hash, GetHandleId(u), 0, temp_e)
@@ -180,7 +179,6 @@ function SkillShockingRoar takes unit caster returns nothing
         exitwhen u == null
         call GroupRemoveUnit(temp_g, u)
         call SetUnitPropWindow(u, GetUnitDefaultPropWindow(u))
-        call SetUnitPathing(u, true)
         call DestroyEffect(LoadEffectHandle(effect_Hash, GetHandleId(u), 0))
     endloop
 
