@@ -55,7 +55,10 @@ function SkillKnockbackFunc_TimerFunc takes nothing returns nothing
     set distance_Hash = null
 endfunction
 
-function SkillKnockbackFunc takes unit u, real distance, real angle returns nothing
+// 通用击退技能
+// 参数：单位，距离，角度
+// 返回：持续时间
+function SkillKnockbackFunc takes unit u, real distance, real angle returns real
     local timer t
     local integer id
     local hashtable distance_Hash
@@ -100,4 +103,6 @@ function SkillKnockbackFunc takes unit u, real distance, real angle returns noth
     // Clear leaks
     set t = null
     set distance_Hash = null
+
+    return Common_SkillKnockback_TimerInterval * Common_SkillKnockback_KnockbackCount
 endfunction

@@ -68,7 +68,8 @@ endfunction
 // 参数1：起始位置
 // 参数2：目标位置
 // 参数3：飞行物模型
-// 参数4：重力
+// 参数4：高度
+// 参数5：重力
 // 返回时间
 function SkillProjectileFunc takes location source_loc, location target_loc, string projectileModelName, real height, real gravity returns real
     local timer t
