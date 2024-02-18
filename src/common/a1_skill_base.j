@@ -4,6 +4,7 @@
 // 优先返回距离施法者最近的目标
 function SelectSkillTarget takes unit caster, real rd returns unit
     local unit target = null
+    // FIXME
     local group g = GetUnitsInRangeOfLocAll( rd, GetUnitLoc(caster))
     local unit u
     local real dis = rd
