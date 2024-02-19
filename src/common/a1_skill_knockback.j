@@ -1,9 +1,9 @@
 globals
     // Start Configuration
 
-    constant real Common_SkillKnockback_TimerInterval = 0.03
-    constant integer Common_SkillKnockback_KnockbackCount = 10
-    constant real Common_SkillKnockback_KnockbackCompensate = 0.0563
+    constant real Common_SkillKnockback_TimerInterval = 0.02
+    constant integer Common_SkillKnockback_KnockbackCount = 20
+    constant real Common_SkillKnockback_FormulaCoefficient = 0.2
 
     // End Configuration
 
@@ -62,38 +62,44 @@ function SkillKnockbackFunc takes unit u, real distance, real angle returns real
     local timer t
     local integer id
     local hashtable distance_Hash
-    local real temp_distance
-    local real remaining_distance
-    local real compensate
+    local real time
+    local real speed
+    local real acceleration
     local integer i
+    local real temp_distance
+    local real distance_sum
+    local real temp_time
 
     set t = CreateTimer()
     set id = GetHandleId(t)
     set distance_Hash = InitHashtable()
 
+    set time = Common_SkillKnockback_TimerInterval * Common_SkillKnockback_KnockbackCount
+    set speed = distance / Common_SkillKnockback_FormulaCoefficient
+    set acceleration = -speed / time
+
     call SaveUnitHandle(Common_SkillKnockback_Hash, id, 0, u)
     call SaveReal(Common_SkillKnockback_Hash, id, 1, distance)
     call SaveReal(Common_SkillKnockback_Hash, id, 2, angle)
-    call SaveInteger(Common_SkillKnockback_Hash, id, 3, 0)
+    call SaveInteger(Common_SkillKnockback_Hash, id, 3, 1)
+    call SaveHashtableHandle(Common_SkillKnockback_Hash, id, 4, distance_Hash)
 
     // linear decrease
-    set i = 0
+    set i = 1
     set temp_distance = 0
-    set remaining_distance = distance
-    set compensate = distance * Common_SkillKnockback_KnockbackCompensate / Common_SkillKnockback_KnockbackCount
+    set distance_sum = 0
     loop
         exitwhen i > Common_SkillKnockback_KnockbackCount
-        set temp_distance = remaining_distance / 4
-        set remaining_distance = remaining_distance - temp_distance
-        set temp_distance = temp_distance + compensate
-        if temp_distance < 0.01 then
-            set temp_distance = 0.01
-        endif
-        call SaveReal(distance_Hash, id, i, temp_distance)
+
+        set temp_time = Common_SkillKnockback_TimerInterval * i
+        set temp_distance = speed * temp_time + acceleration * temp_time * temp_time / 2
+
+        call SaveReal(distance_Hash, id, i, temp_distance - distance_sum)
+
+        set distance_sum = temp_distance
+
         set i = i + 1
     endloop
-
-    call SaveHashtableHandle(Common_SkillKnockback_Hash, id, 4, distance_Hash)
 
     // Freezing
     call PauseUnit(u, true)
@@ -104,5 +110,5 @@ function SkillKnockbackFunc takes unit u, real distance, real angle returns real
     set t = null
     set distance_Hash = null
 
-    return Common_SkillKnockback_TimerInterval * Common_SkillKnockback_KnockbackCount
+    return time
 endfunction
