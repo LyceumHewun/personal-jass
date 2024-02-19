@@ -1,10 +1,12 @@
 // requires - FileIO.j
 globals
-    string Interact_System_Flags = "intsys"
+    constant string Interact_System_Connect_Flags = "con"
+    constant string Interact_System_Flags = "intsys"
+    constant string Interact_System_Separator = ";"
     string Interact_System_RandomName
     timer Interact_System_Timer
     integer Interact_System_Counter = 0
-    real Interact_System_Delay = 1.
+    constant real Interact_System_Delay = 1.
 endglobals
 
 function Interact_System takes nothing returns nothing
@@ -26,7 +28,7 @@ function Init_Interact_System takes nothing returns nothing
     set Interact_System_RandomName = I2S( GetRandomInt( 0, 1000000 ) )
 
     // show flags and wait to connect
-    call File.open( Interact_System_Flags + "_" + Interact_System_RandomName + ".txt" ).write("wait").close()
+    call File.open( Interact_System_Flags + "_" + Interact_System_Connect_Flags + ".txt" ).write( Interact_System_RandomName ).close()
 
     call TimerStart( Interact_System_Timer, Interact_System_Delay, true, function Interact_System )
 endfunction
