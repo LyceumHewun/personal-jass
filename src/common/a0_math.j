@@ -56,3 +56,7 @@ endfunction
 function GenerateLocByLoc takes location l, real distance, real angle returns location
     return GenerateLoc(GetLocationX(l), GetLocationY(l), distance, angle)
 endfunction
+
+function IsOdd takes integer i returns boolean
+    return i % 2 == 1
+endfunction
