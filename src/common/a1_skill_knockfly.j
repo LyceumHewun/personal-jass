@@ -33,12 +33,11 @@ function SkillKnockflyFunc_TimerFunc takes nothing returns nothing
         call UnitRemoveAbility(u, 'Amrf')
         call SetUnitFlyHeight(u, temp_height, 100000000.)
 
-        set current_count = current_count + 1
-        call SaveInteger(Common_SkillKnockfly_Hash, id, 2, current_count)
+        call SaveInteger(Common_SkillKnockfly_Hash, id, 2, current_count + 1)
     else
         call PauseTimer(t)
         call FlushChildHashtable(Common_SkillKnockfly_Hash, id)
-        call FlushChildHashtable(height_Hash, id)
+        call FlushParentHashtable(height_Hash)
         call DestroyTimer(t)
 
         // Unfreezing

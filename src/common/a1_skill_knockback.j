@@ -35,12 +35,11 @@ function SkillKnockbackFunc_TimerFunc takes nothing returns nothing
         set loc = GenerateLocByUnit(u, temp_distance, angle)
         call SetUnitPosition(u, GetLocationX(loc), GetLocationY(loc))
 
-        set current_count = current_count + 1
-        call SaveInteger(Common_SkillKnockback_Hash, id, 3, current_count)
+        call SaveInteger(Common_SkillKnockback_Hash, id, 3, current_count + 1)
     else
         call PauseTimer(t)
         call FlushChildHashtable(Common_SkillKnockback_Hash, id)
-        call FlushChildHashtable(distance_Hash, id)
+        call FlushParentHashtable(distance_Hash)
         call DestroyTimer(t)
 
         // Unfreezing
