@@ -25,11 +25,10 @@ function SkillKnockbackFunc_TimerFunc takes nothing returns nothing
     set id = GetHandleId(t)
 
     set u = LoadUnitHandle(Common_SkillKnockback_Hash, id, 0)
-    set distance = LoadReal(Common_SkillKnockback_Hash, id, 1)
-    set angle = LoadReal(Common_SkillKnockback_Hash, id, 2)
-    set count = LoadInteger(Common_SkillKnockback_Hash, id, 3)
-    set current_count = LoadInteger(Common_SkillKnockback_Hash, id, 4)
-    set distance_Hash = LoadHashtableHandle(Common_SkillKnockback_Hash, id, 5)
+    set angle = LoadReal(Common_SkillKnockback_Hash, id, 1)
+    set count = LoadInteger(Common_SkillKnockback_Hash, id, 2)
+    set current_count = LoadInteger(Common_SkillKnockback_Hash, id, 3)
+    set distance_Hash = LoadHashtableHandle(Common_SkillKnockback_Hash, id, 4)
 
     if current_count < count then
         set temp_distance = LoadReal(distance_Hash, id, current_count)
@@ -37,7 +36,7 @@ function SkillKnockbackFunc_TimerFunc takes nothing returns nothing
         call SetUnitPosition(u, GetLocationX(loc), GetLocationY(loc))
 
         set current_count = current_count + 1
-        call SaveInteger(Common_SkillKnockback_Hash, id, 4, current_count)
+        call SaveInteger(Common_SkillKnockback_Hash, id, 3, current_count)
     else
         call PauseTimer(t)
         call FlushChildHashtable(Common_SkillKnockback_Hash, id)
@@ -80,11 +79,10 @@ function SkillKnockbackFunc_Time takes unit u, real distance, real angle, real t
     set count = R2I( time / Common_SkillKnockback_TimerInterval )
 
     call SaveUnitHandle(Common_SkillKnockback_Hash, id, 0, u)
-    call SaveReal(Common_SkillKnockback_Hash, id, 1, distance)
-    call SaveReal(Common_SkillKnockback_Hash, id, 2, angle)
-    call SaveInteger(Common_SkillKnockback_Hash, id, 3, count)
-    call SaveInteger(Common_SkillKnockback_Hash, id, 4, 1)
-    call SaveHashtableHandle(Common_SkillKnockback_Hash, id, 5, distance_Hash)
+    call SaveReal(Common_SkillKnockback_Hash, id, 1, angle)
+    call SaveInteger(Common_SkillKnockback_Hash, id, 2, count)
+    call SaveInteger(Common_SkillKnockback_Hash, id, 3, 1)
+    call SaveHashtableHandle(Common_SkillKnockback_Hash, id, 4, distance_Hash)
 
     // linear decrease
     set i = 1
