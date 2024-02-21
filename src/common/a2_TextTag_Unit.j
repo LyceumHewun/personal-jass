@@ -17,6 +17,7 @@ function CreateUnitTextTag_TimerFunc takes nothing returns nothing
     local real offsetY
     local real offsetZ
     local location u_loc
+    local real u_flyheight
 
     set t = GetExpiredTimer()
     set id = GetHandleId( t )
@@ -27,8 +28,9 @@ function CreateUnitTextTag_TimerFunc takes nothing returns nothing
     set offsetZ = LoadReal( Common_TextTag_Unit_Hash, id, 4 )
 
     set u_loc = GetUnitLoc(u)
+    set u_flyheight = GetUnitFlyHeight(u)
 
-    call SetTextTagPos(tt, GetLocationX(u_loc) + offsetX, GetLocationY(u_loc) + offsetY, offsetZ)
+    call SetTextTagPos(tt, GetLocationX(u_loc) + offsetX, GetLocationY(u_loc) + offsetY, offsetZ + u_flyheight)
 
     // Clear leaks
     call RemoveLocation( u_loc )
@@ -44,12 +46,14 @@ function CreateUnitTextTag takes unit u, string text, real size, real red, real 
     local location u_loc
     local location loc
     local texttag tt
+    local real u_flyheight
 
     set t = CreateTimer()
     set id = GetHandleId( t )
     set u_loc = GetUnitLoc(u)
+    set u_flyheight = GetUnitFlyHeight(u)
     set loc = OffsetLocation(u_loc, offsetX, offsetY)
-    set tt = CreateTextTagLocBJ( text, loc, offsetZ, size, red, green, blue, transparency )
+    set tt = CreateTextTagLocBJ( text, loc, offsetZ + u_flyheight, size, red, green, blue, transparency )
 
     call SaveUnitHandle( Common_TextTag_Unit_Hash, id, 0, u )
     call SaveTextTagHandle( Common_TextTag_Unit_Hash, id, 1, tt )
