@@ -20,8 +20,8 @@ function SupportMagicCannonballDamage takes nothing returns nothing
     set startl = LoadLocationHandle( support_MagicCannonball_Hash, id, 1)
     set u = LoadUnitHandle( support_MagicCannonball_Hash, id, 2)
 
-    call UnitDamagePointLoc( u, 0, 500, loc, 100, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
     set temp_e = AddSpecialEffectLocBJ( loc, "Abilities\\Spells\\Human\\FlameStrike\\FlameStrike1.mdl" )
+    call UnitDamagePointLoc( u, 0, 180, loc, 100, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL )
 
     call PolledWait( 2.00 )
     call PauseTimer(t)
@@ -51,7 +51,7 @@ function SupportMagicCannonball takes unit caster returns nothing
     set id = GetHandleId(t)
 
     set loc0 = CameraSetupGetDestPositionLoc(GetCurrentCameraSetup())
-    set loc = GetRandomLocInRect(GetRectFromCircleBJ( loc0, 400))
+    set loc = GetRandomLocInRect(GetRectFromCircleBJ( loc0, 1200))
 
     set startl = GetUnitLoc(caster)
 
@@ -59,7 +59,7 @@ function SupportMagicCannonball takes unit caster returns nothing
     call SaveLocationHandle( support_MagicCannonball_Hash, id, 1, startl)
     call SaveUnitHandle( support_MagicCannonball_Hash, id, 2, caster)
 
-    set holding = SkillProjectileFunc( startl, loc, "Abilities\\Weapons\\PhoenixMissile\\Phoenix_Missile.mdl",800 ,980)
+    set holding = SkillProjectileFunc( startl, loc, "Abilities\\Weapons\\PhoenixMissile\\Phoenix_Missile.mdl",1600 ,980)
     call TimerStart( t, holding, false, function SupportMagicCannonballDamage)
 
     set t = null
